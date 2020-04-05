@@ -1,83 +1,43 @@
-# Unit 18 PWA Homework: Online/Offline Budget Trackers
+# Mini Project
 
-Add functionality to [our existing Budget Tracker application](../../17-nosql/3-saturday-indexeddb/activities/26-Stu-Mini-Project/README.md) to allow for offline access and functionality.
+In this activity, you will implement IndexedDB so the budget tracker persists data even when the device is not online. When the device finally reconnects, any pending transactions will be synced with the backend api. Write all of your IndexedDB code in [db.js](./Unsolved/public/db.js).
 
-The user will be able to add expenses and deposits to their budget with or without a connection. When entering transactions offline, they should populate the total when brought back online.
+You can force "offline" in the Chrome Debugger > Network > Click the "Online" dropdown > "Offline"
 
-## Requirements
+## Instructions
 
-Offline Functionality:
+- Create a new db request for a `budget` database
 
-- Enter deposits offline
+- Inside `onupgradeneeded`, create an object store called `pending` and set `autoIncrement` to `true`
 
-- Enter expenses offline
+- Inside your `saveRecord()` function:
 
-When brought back online:
+  - Create a transaction on the `pending` object store with `readwrite` access
 
-- Offline entries should be added to tracker.
+  - Access your pending object store
 
-PWA requirements:
+  - Add a record to your store with the `add` method
 
-- A service worker must be registered
+- Inside the `checkDatabase` function:
 
-- A manifest must be included
+  - Open a transaction on your `pending` object store
 
-- The app must be installable
+  - Access your `pending` object store
 
-## Hints
+  - Get all records from store and set to a variable
 
-- Service workers are great at caching static assets, use a service worker for files like HTML, JavaScript, CSS, etc.
+- Inside `getAll.onsuccess`:
 
-- IndexedDB is good for data related API requests. Use this for API requests.
+  - If successful, open a transaction on your `pending` object store
 
-  - [This mini-project](../../17-nosql/3-saturday-indexeddb/activities/26-Stu-Mini-Project/Solved/public/db.js) is exactly the same file used in the solution for this homework.
+  - Access your `pending` object store
 
-## User Story
+  - Clear all items in your store
 
-AS AN avid traveller
-I WANT to be able to track my withdrawals and deposits with or without a data/internet connection
-SO THAT my account balance is accurate when I am traveling
+## 💡 Hint(s)
 
-## Business Context
+- You can use the the comments in [db.js](./Unsolved/public/db.js) as a guide
 
-Giving users a fast and easy way to track their money is important, but allowing them to access that information anytime is even more important. Having offline functionality is paramount to our applications success.
+## 🏆 Bonus
 
-## Acceptance Criteria
-
-GIVEN a user is on Budget App without an internet connection
-WHEN the user inputs a withdrawal or deposit
-THEN that will be shown on the page, and added to their transaction history when their connection is back online.
-
-## Bonus
-
-Try out [workbox](https://developers.google.com/web/tools/workbox) for your service working and employ some of its caching strategies.
-
----
-
-## Commit Early and Often
-
-- One of the most important skills to master as a web developer is version control. Building the habit of committing via Git is important for two reasons:
-
-1. Your commit history is a signal to employers that you are actively working on projects and learning new skills
-
-2. Your commit history allows you to revert your code base in the event that you need to return to a previous state
-
-- Follow these guidelines for committing:
-
-  - Make single purpose commits for related changes to ensure a clean, manageable history. If you are fixing two issues, make two commits
-
-  - Write descriptive, meaningful commit messages so that you and anyone else looking at your repository can easily understand its history
-
-  - Don't commit half done work, for the sake of your collaborators (and your future self!)
-
-  - Test your application before you commit to ensure functionality at every step in the development process
-
-- We would like you to have well over 200 commits by graduation, so commit early and often!
-
-## Submission on BCS
-
-- You are required to submit the following:
-
-  - the URL to the deployed application
-
-  - the URL to the Github repository
+- Create a button that resets all funds to zero in your indexedDB
